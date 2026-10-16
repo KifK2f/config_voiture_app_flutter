@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage>{
               child: const Text(
                   "Je valide",
                 style: TextStyle(
-                  color: Colors.blueGrey
+                  color: Colors.blueGrey,
                 ),
               ))
         ],
@@ -85,17 +85,20 @@ class _HomePageState extends State<HomePage>{
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Container(
-                  width: 500,
-                  height: 150,
+                  width: MediaQuery.of(context).size.width, //Pour prendre la largerur selon l'écran du smartphone
+                  // height: 150,
                   padding: const EdgeInsets.all(16),
-                  child: const Column(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
                           "Voici la voiture faite pour vous",
                           style: TextStyle(fontSize: 15),
                       ),
-                      SizedBox(height: 10),
+                      Image.asset(
+                        "assets/images/MG.jpg",
+                        // width: MediaQuery.of(context).size.width, //Pour prendre la largerur selon l'écran du smartphone
+                      ),
                       Text(
                         "MG cyberster",
                         style: TextStyle(fontSize: 15),
