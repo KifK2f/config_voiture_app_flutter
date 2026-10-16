@@ -13,8 +13,23 @@ class HomePage extends StatefulWidget{
 
 class _HomePageState extends State<HomePage>{
 
+  late TextEditingController _controller;
+
   void unfocusMethod(){
     FocusScope.of(context).requestFocus(FocusNode());
+  }
+
+  //Initialisation de _controller
+  @override
+  void initState(){
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose(){
+    _controller.dispose(); //On le mets avant le dispose
+    super.dispose();
   }
 
   @override
@@ -48,11 +63,56 @@ class _HomePageState extends State<HomePage>{
         backgroundColor: Colors.blueGrey,
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              //Texte de bienvenue
+              Text(
+                  "Bienvenue : ${_controller.text}",
+                  style: TextStyle(
+                    color: Colors.lightBlue,
+                    fontSize: 18
+                  ),
+              ),
 
-          ],
+              //Card qui affiche les images
+              Card(
+                color: Colors.blueGrey,
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Container(
+                  width: 500,
+                  height: 150,
+                  padding: const EdgeInsets.all(16),
+                  child: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                          "Voici la voiture faite pour vous",
+                          style: TextStyle(fontSize: 15),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        "MG cyberster",
+                        style: TextStyle(fontSize: 15),
+                      ),                    ],
+                  ),
+                ),
+              ),
+
+
+              TextField(
+                controller: _controller,
+                decoration: InputDecoration(
+                  hintText: "Entrer votre nom"
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
