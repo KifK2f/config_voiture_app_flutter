@@ -145,8 +145,27 @@ class _HomePageState extends State<HomePage>{
                   ),
                   // Text(max.toString()),
                 ],
-              )
+              ),
+              Divider(),
 
+              //Un Switch pour le type de moteur
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Moteur ${isOn ? 'électrique' : 'thermique'}"
+                  ),
+                  Switch(
+                      value: isOn,
+                      onChanged: (newBool){
+                        setState(() {
+                          isOn = newBool;
+                        });
+                      })
+                ],
+              ),
+
+              Divider(),
 
             ],
           ),
