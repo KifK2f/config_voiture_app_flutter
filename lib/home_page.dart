@@ -13,6 +13,11 @@ class HomePage extends StatefulWidget{
 
 class _HomePageState extends State<HomePage>{
 
+  bool isOn = true;
+  double min = 0;
+  double max = 100;
+  double current = 0;
+
   late TextEditingController _controller;
 
   void unfocusMethod(){
@@ -113,7 +118,36 @@ class _HomePageState extends State<HomePage>{
                 decoration: InputDecoration(
                   hintText: "Entrer votre nom"
                 ),
+              ),
+
+              //Le Slider
+              Container(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                    "Nombre de kilomètres annuel : ${current.toInt()}",
+                    style: TextStyle(fontSize: 15),
+                ),
+              ), //toInt() pour avoir des nombres entier
+              Row(
+                children: [
+                  // Text(min.toString()),
+                  Expanded(
+                      child: Slider(
+                        min: min,
+                        max: max,
+                        value: current,
+                        onChanged: (newValue){
+                          setState(() {
+                            current = newValue;
+                          });
+                        }
+                      )
+                  ),
+                  // Text(max.toString()),
+                ],
               )
+
+
             ],
           ),
         ),
