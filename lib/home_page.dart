@@ -37,6 +37,17 @@ class _HomePageState extends State<HomePage>{
     super.dispose();
   }
 
+  final Map<String, bool> _options = {
+    "GPS": false,
+    "Caméra de recul": false,
+    "Clim par zone": false,
+    "Régulateur de vitesse": false,
+    "Toit ouvrant": false,
+    "Siège chauffant": false,
+    "Roue de secours": false,
+    "Jantes alu": false
+  };
+
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -44,7 +55,6 @@ class _HomePageState extends State<HomePage>{
         title: Text(
             widget.title,
             style: TextStyle(
-              fontSize: 20,
               color: Colors.white
             ),
         ),
@@ -60,6 +70,8 @@ class _HomePageState extends State<HomePage>{
                   "Je valide",
                 style: TextStyle(
                   color: Colors.blueGrey,
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold
                 ),
               ))
         ],
@@ -166,6 +178,35 @@ class _HomePageState extends State<HomePage>{
               ),
 
               Divider(),
+
+              // Un Radio pour le nombre de places
+              Row(
+                children: [
+                  Text("Nombre de place "),
+                ],
+              ),
+
+              Divider(),
+              // Un Checkbox pour les options
+              Container(
+                alignment: Alignment.centerLeft,
+                child: Text("Option du véhivule"),
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: _options.keys.map((key){
+                  return CheckboxListTile(
+                    title: Text(key),
+                    value: _options[key],
+                    onChanged: (b){
+                      setState(() {
+                        _options[key] = b ?? false;
+                      });
+                    },
+                  );
+                }).toList(),
+              )
+
 
             ],
           ),
