@@ -37,6 +37,12 @@ class _HomePageState extends State<HomePage>{
     super.dispose();
   }
 
+  //Bouton Radio
+  List<int> placeList = [2, 4, 5, 7];
+  int? _placesSelected;
+
+
+  //Pour le checkBOX
   final Map<String, bool> _options = {
     "GPS": false,
     "Caméra de recul": false,
@@ -47,6 +53,22 @@ class _HomePageState extends State<HomePage>{
     "Roue de secours": false,
     "Jantes alu": false
   };
+
+  //La liste de voitures
+  final List<Car> _car = [
+    Car(name: "MG cyberster", url: "MG", places: 2, isElectric: true),
+    Car(name: "R5 électrique", url: "R5", places: 4, isElectric: true),
+    Car(name: "Tesla", url: "tesla", places: 5, isElectric: true),
+    Car(name: "Van VW", url: "Van", places: 7, isElectric: true),
+    Car(name: "Alpine", url: "Alpine", places: 2, isElectric: false),
+    Car(name: "Fiat 500", url: "Fiat 500", places: 4, isElectric: false),
+    Car(name: "Peugeot 3008", url: "P3008", places: 5, isElectric: false),
+    Car(name: "Dacia Jogger", url: "Jogger", places: 7, isElectric: false),
+  ];
+
+  //La logique de choix de voiture
+  // _carSelected = cars.firstWhere((car) => car.is)
+
 
   @override
   Widget build(BuildContext context){
@@ -65,12 +87,16 @@ class _HomePageState extends State<HomePage>{
                   unfocusMethod();
                 });
               }),
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                fixedSize: const Size(90, 40), // Largeur : 90, hauteur : 40
+                padding: EdgeInsets.zero,
+              ),
               child: const Text(
                   "Je valide",
                 style: TextStyle(
                   color: Colors.blueGrey,
-                  fontSize: 11,
+                  fontSize: 13,
                   fontWeight: FontWeight.bold
                 ),
               ))
@@ -180,31 +206,54 @@ class _HomePageState extends State<HomePage>{
               Divider(),
 
               // Un Radio pour le nombre de places
-              Row(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Nombre de place "),
-                ],
+                  Text("Nombre de places : ${_placesSelected ?? ''}"),
+                  RadioGroup<int>(
+                    groupValue: _placesSelected,
+                    onChanged: (value){
+                      setState(() {
+                        _placesSelected = value;
+                      });
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: placeList.map((place){
+                        return Column(
+                          children: [
+                            Radio<int>(value: place),
+                          ],
+                        );
+                      }).toList(),
+                    ),
+                  )
+                ]
               ),
+
+
 
               Divider(),
               // Un Checkbox pour les options
-              Container(
-                alignment: Alignment.centerLeft,
-                child: Text("Option du véhivule"),
-              ),
               Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: _options.keys.map((key){
-                  return CheckboxListTile(
-                    title: Text(key),
-                    value: _options[key],
-                    onChanged: (b){
-                      setState(() {
-                        _options[key] = b ?? false;
-                      });
-                    },
-                  );
-                }).toList(),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Option du véhivule"),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: _options.keys.map((key){
+                      return CheckboxListTile(
+                        title: Text(key),
+                        value: _options[key],
+                        onChanged: (b){
+                          setState(() {
+                            _options[key] = b ?? false;
+                          });
+                        },
+                      );
+                    }).toList(),
+                  ),
+                ],
               )
 
 
@@ -214,4 +263,15 @@ class _HomePageState extends State<HomePage>{
       ),
     );
   }
+}
+
+class Car{
+  String name;
+  String url;
+  int places;
+  bool isElectric;
+
+  Car({required this.name, required this.url, required this.places, required this.isElectric});
+
+  String get urlString => "assets/images/$url.jpg";
 }
