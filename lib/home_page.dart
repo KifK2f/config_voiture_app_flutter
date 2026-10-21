@@ -13,10 +13,11 @@ class HomePage extends StatefulWidget{
 
 class _HomePageState extends State<HomePage>{
 
-  bool isOn = true;
+  late bool _electric = true;
+
   double min = 0;
-  double max = 100;
-  double current = 0;
+  double max = 25000;
+  double _current = 0;
 
   late TextEditingController _controller;
 
@@ -39,7 +40,7 @@ class _HomePageState extends State<HomePage>{
 
   //Bouton Radio
   List<int> placeList = [2, 4, 5, 7];
-  int? _placesSelected;
+  late int? _placesSelected = 2;
 
 
   //Pour le checkBOX
@@ -55,7 +56,7 @@ class _HomePageState extends State<HomePage>{
   };
 
   //La liste de voitures
-  final List<Car> _car = [
+  final List<Car> _cars = [
     Car(name: "MG cyberster", url: "MG", places: 2, isElectric: true),
     Car(name: "R5 électrique", url: "R5", places: 4, isElectric: true),
     Car(name: "Tesla", url: "tesla", places: 5, isElectric: true),
@@ -67,7 +68,24 @@ class _HomePageState extends State<HomePage>{
   ];
 
   //La logique de choix de voiture
-  // _carSelected = cars.firstWhere((car) => car.is)
+  // late final _carSelected = _cars.firstWhere((car) => car.isElectric == _electric && car.places == _placesSelected);
+  String get _message {
+    // Selon le moteur et le nombre de kilomètres
+    //Si l'utilisateur fait plus de 15 000kms et veut un modèle électrique
+    if(_current>= 15000 && _electric){
+      return "Vous devriez penser à un moteur thermique compte tenu du nombre de kilomètres";
+    } else if(_current<= 5000 && !_electric){
+      return "Vous faites peu de kilomètres, pensez à regarder les voiture électriques";
+    } else {
+      return "Voici la voiture faite pour vous";
+    }
+  }
+
+  Car get _carSelected {
+   return _cars.firstWhere(
+           (car) => car.isElectric == _electric && car.places == _placesSelected
+   );
+  }
 
 
   @override
@@ -135,15 +153,18 @@ class _HomePageState extends State<HomePage>{
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                          "Voici la voiture faite pour vous",
-                          style: TextStyle(fontSize: 15),
+                          // "Voici la voiture faite pour vous",
+                        _message,
+                        style: TextStyle(fontSize: 15),
                       ),
                       Image.asset(
-                        "assets/images/MG.jpg",
+                        // "assets/images/${_carSelected.urlString}.jpg",
+                        _carSelected.urlString
                         // width: MediaQuery.of(context).size.width, //Pour prendre la largerur selon l'écran du smartphone
                       ),
                       Text(
-                        "MG cyberster",
+                        // "${_carSelected.name}",
+                        _carSelected.name,
                         style: TextStyle(fontSize: 15),
                       ),                    ],
                   ),
@@ -162,7 +183,7 @@ class _HomePageState extends State<HomePage>{
               Container(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                    "Nombre de kilomètres annuel : ${current.toInt()}",
+                    "Nombre de kilomètres annuel : ${_current.toInt()}",
                     style: TextStyle(fontSize: 15),
                 ),
               ), //toInt() pour avoir des nombres entier
@@ -173,10 +194,10 @@ class _HomePageState extends State<HomePage>{
                       child: Slider(
                         min: min,
                         max: max,
-                        value: current,
+                        value: _current,
                         onChanged: (newValue){
                           setState(() {
-                            current = newValue;
+                            _current = newValue;
                           });
                         }
                       )
@@ -191,13 +212,13 @@ class _HomePageState extends State<HomePage>{
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Moteur ${isOn ? 'électrique' : 'thermique'}"
+                    "Moteur ${_electric ? 'électrique' : 'thermique'}"
                   ),
                   Switch(
-                      value: isOn,
+                      value: _electric,
                       onChanged: (newBool){
                         setState(() {
-                          isOn = newBool;
+                            _electric = newBool;
                         });
                       })
                 ],
