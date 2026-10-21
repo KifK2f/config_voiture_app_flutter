@@ -1,30 +1,47 @@
 # 🚗 Config Voiture App Flutter
 
 <p align="center">
-  <strong>Application mobile de configuration et de personnalisation automobile</strong>
+  <strong>Configurateur de voiture développé avec Flutter</strong>
 </p>
 
 <p align="center">
-  Une application Flutter conçue pour explorer, configurer et personnaliser les caractéristiques d'un véhicule.
+  Une application mobile qui recommande une voiture selon le moteur, le nombre de places et le kilométrage annuel de l'utilisateur.
 </p>
-
----
 
 ## 📌 Présentation
 
-**Config Voiture App Flutter** est un projet de développement mobile réalisé avec Flutter. Il a pour objectif de proposer une interface intuitive permettant aux utilisateurs de découvrir les options d'un véhicule et de personnaliser sa configuration.
+**Config Voiture App Flutter** est une application mobile réalisée avec Flutter et Dart. L'utilisateur saisit son nom, indique son kilométrage annuel, choisit un type de moteur et un nombre de places, puis l'application lui présente une voiture parmi huit modèles, accompagnée d'un conseil adapté à son usage.
 
-Ce projet constitue également un support d'apprentissage du développement d'applications multiplateformes avec Flutter et Dart.
+Le projet a été réalisé comme exercice du cours *Flutter & Dart - L'essentiel* (Udemy). Son objectif principal est de réutiliser les widgets interactifs de Flutter dans une seule interface.
 
 ## ✨ Fonctionnalités
 
-Les fonctionnalités seront ajoutées progressivement au fil du développement.
+- **Message de bienvenue** avec le nom saisi, mis à jour au clic sur « Je valide » (`TextField` + `TextEditingController`)
+- **Kilométrage annuel** de 0 à 25 000 km (`Slider`)
+- **Type de moteur** électrique ou thermique (`Switch`)
+- **Nombre de places** : 2, 4, 5 ou 7 (`Radio` dans un `RadioGroup`)
+- **Options du véhicule** : GPS, caméra de recul, clim par zone, régulateur de vitesse, toit ouvrant, siège chauffant, roue de secours, jantes alu (`CheckboxListTile`). Ces options sont purement interactives et n'influencent pas la recommandation.
+- **Carte résultat** (`Card`) qui affiche un message, l'image et le nom de la voiture recommandée, et qui se met à jour à chaque changement
+- **Bouton « Je valide »** dans l'`AppBar` : il ferme le clavier et met à jour le message de bienvenue
 
-- [ ] Affichage des informations du véhicule
-- [ ] Personnalisation des caractéristiques du véhicule
-- [ ] Sélection des options et équipements
-- [ ] Aperçu de la configuration choisie
-- [ ] Interface utilisateur intuitive et responsive
+## 🧠 Logique de recommandation
+
+### Message affiché selon le moteur et le kilométrage
+
+| Condition | Message |
+|---|---|
+| 15 000 km ou plus **et** moteur électrique | « Vous devriez penser à un moteur thermique compte tenu du nombre de kilomètres » |
+| 5 000 km ou moins **et** moteur thermique | « Vous faites peu de kilomètres, pensez à regarder les voitures électriques » |
+| Autres cas | « Voici la voiture faite pour vous » |
+
+### Voiture recommandée selon le moteur et le nombre de places
+
+| Moteur | 2 places | 4 places | 5 places | 7 places |
+|---|---|---|---|---|
+| Électrique | MG Cyberster | R5 électrique | Tesla | Van VW |
+| Thermique | Alpine | Fiat 500 | Peugeot 3008 | Dacia Jogger |
+
+La recherche est faite avec `firstWhere` sur la liste de voitures (classe `Car`) en comparant le type de moteur et le nombre de places.
 
 ## 🛠️ Technologies utilisées
 
@@ -32,16 +49,15 @@ Les fonctionnalités seront ajoutées progressivement au fil du développement.
 |---|---|
 | [Flutter](https://flutter.dev/) | Développement multiplateforme |
 | [Dart](https://dart.dev/) | Langage de programmation |
-| Android | Plateforme mobile cible |
+| Material Design | Widgets de l'interface |
 | Git et GitHub | Gestion de versions et hébergement du code |
 
 ## 📷 Aperçu de l'application
 
-Les captures d'écran de l'application seront ajoutées ici au fur et à mesure de son développement.
-
-<!-- Exemple après ajout d'une capture :
-![Écran d'accueil](screenshots/home.png)
--->
+<p align="center">
+  <img src="screenshots/ConfigVoitureImage1.jpeg" alt="Ecran 1" width="250">
+  <img src="screenshots/ConfigVoitureImage2.jpeg" alt="Ecran 2" width="250">
+</p>
 
 ## 🚀 Installation et exécution
 
@@ -78,29 +94,36 @@ flutter pub get
 flutter run
 ```
 
-> Remarque : adapte l'URL de clonage si le nom ou l'adresse de ton dépôt GitHub est différent.
+### Images de l'application
+
+Les images des voitures se trouvent dans `assets/images/` et sont déclarées dans `pubspec.yaml` :
+
+```yaml
+flutter:
+  assets:
+    - assets/images/
+```
 
 ## 📁 Structure du projet
 
 ```text
 config_voiture_app_flutter/
-├── android/
-├── ios/
+├── assets/
+│   └── images/          # Images des voitures
 ├── lib/
-│   └── main.dart
-├── test/
-├── web/
-├── windows/
+│   ├── main.dart        # Point d'entrée et thème
+│   └── home_page.dart   # Page principale et classe Car
+├── screenshots/         # Captures d'écran du README
 ├── pubspec.yaml
 └── README.md
 ```
 
 ## 🎯 Objectifs du projet
 
-- Approfondir les compétences en Flutter et Dart.
-- Concevoir une interface utilisateur moderne.
-- Apprendre à structurer une application multiplateforme.
-- Mettre en pratique les bonnes pratiques de développement logiciel.
+- Réutiliser les widgets interactifs de Flutter (`TextField`, `Slider`, `Switch`, `Radio`, `Checkbox`)
+- Gérer l'état d'une page avec un `StatefulWidget` et `setState`
+- Modéliser des données avec une classe Dart (`Car`) et les filtrer dans une liste
+- Afficher un résultat dynamique dans une `Card`
 
 ## 👨‍💻 Auteur
 
